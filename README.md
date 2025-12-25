@@ -1,64 +1,74 @@
-CIH Split Application README
-CIH Split Demo Application
+# CIH Split Application
 
-Overview
+## CIH Split Demo Application
 
-This project is an interactive French-language demo CIH Split application built for the CIH Hackathon Tour. It showcases how a CIH customer can explore buy-now-pay-later (BNPL) financing options and complete payments using the official Wallet Management Kit APIs.
+## Overview
+This project is an **interactive French-language demo application** developed for the **CIH Hackathon Tour**.  
+It demonstrates how a CIH customer can explore **Buy Now, Pay Later (BNPL)** financing options and complete payments using the official **CIH Wallet Management Kit APIs**.
 
-The application does not handle wallet creation or activation. It only supports customers who already have an active CIH wallet.
+⚠️ The application **does not handle wallet creation or activation**.  
+It is designed exclusively for customers who already have an **active CIH wallet**.
 
-**Features
+---
 
-Customer Dashboard** After login through received credentials, the user sees:
+## Features
 
-Credit score (internally computed)
+### Customer Dashboard
+After login using provided credentials, the customer can view:
+- **Credit score** (internally computed)
+- **Available purchasing limit** (*plafond disponible*)
+- **Next scheduled installment date** (if applicable)
+- **Popular partner products** (Marjane, Electroplanet, Biougnach)
+- **Trending promotional products**
+- **List of CIH Split partner merchants**
 
-Available purchasing limit (“plafond disponible”)
+---
 
-Next scheduled installment date (if applicable)
+### Product Details & Payment Plans
+Each product page includes:
+- Detailed product information
+- A checkout process offering **three payment plans**:
+  1. **4-month split payment** with no interest  
+  2. **Immediate payment** with extended duration and low interest  
+  3. **Deferred payment** (first payment after 2 months) with medium interest  
 
-Popular partner products (Marjane, Electroplanet, Biougnach)
+📌 Interest calculations are performed **within the application** and are **not handled by CIH APIs**.
 
-Trending promotional products
+---
 
-List of CIH Split partners
+### Purchase Simulation & Confirmation
+The purchase flow follows CIH’s **Wallet-to-Merchant transaction process**:
 
-Product Details & Payment Plans
-Each product page displays:
+- **Simulation:**  
+  `POST /wallet/Transfer/WalletToMerchant?step=simulation`
 
-Product information Checkout process has three payment plan options: 4-month split payments with no interest
+- **OTP (optional):**  
+  `POST /wallet/walletToMerchant/cash/out/otp`
 
-Immediate payment with extended duration and small interest
+- **Confirmation:**  
+  `POST /wallet/Transfer/WalletToMerchant?step=confirmation`
 
-Deferred payment (first payment after 2 months) with medium interest
+Once the transaction is confirmed, the backend automatically schedules installment reminders.
 
-The interest calculations are performed inside the application, not through CIH APIs.
+---
 
-Purchase Simulation & Confirmation
-The purchase flow follows CIH’s Wallet-to-Merchant transaction API:
+### Automated Notifications
+The backend system sends:
+- **Email / push notification** one week before each installment
+- **Notification / email** on the installment due date  
 
--Simulation: POST /wallet/Transfer/WalletToMerchant?step=simulation
+These notifications are implemented using **cloud messaging services** and are **not part of CIH APIs**.
 
--OTP (optional): POST /wallet/walletToMerchant/cash/out/otp
+---
 
--Confirmation: POST /wallet/Transfer/WalletToMerchant?step=confirmation
+### Wallet Information & History
+The application retrieves real wallet data using the following CIH endpoints:
 
-Once confirmed, the backend schedules installment reminders.
+- **Customer profile:**  
+  `POST /wallet/clientinfo`
 
-Automated Notifications
-The backend sends:
+- **Wallet balance:**  
+  `GET /wallet/balance?contractid=XXXX`
 
-Email/push notification one week before each installment
-
-Notification/ Emai on the day of the installment
-
-This is implemented via cloud messaging and is not part of CIH APIs.
-
-Wallet Information & History
-The app retrieves real wallet information using:
-
-Customer profile: POST /wallet/clientinfo
-
-Balance: GET /wallet/balance?contractid=XXXX
-
-Transaction history: GET /wallet/operations?contractid=XXXX
+- **Transaction history:**  
+  `GET /wallet/operations?contractid=XXXX`
