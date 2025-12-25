@@ -1,6 +1,7 @@
 # CIH Split Application
 
 ## CIH Split Demo Application
+**Pitch Presentation:** https://www.canva.com/design/DAG6GsjIymc/dt1V90B9QykjV0XqbqezQA/edit?utm_content=DAG6GsjIymc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ## Overview
 This project is an **interactive French-language demo application** developed for the **CIH Hackathon Tour**.  
